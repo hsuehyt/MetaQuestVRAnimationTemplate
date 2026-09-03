@@ -1,0 +1,11 @@
+{
+  "name": "VRAnimationTemplate.Editor",
+  "rootNamespace": "VRAnimationTemplate.Editor",
+  "references": [
+    "VRAnimationTemplate.Runtime",
+    "Unity.InputSystem",
+    "UnityEngine.UI"
+  ],
+  "includePlatforms": ["Editor"],
+  "autoReferenced": true
+}
