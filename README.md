@@ -48,7 +48,7 @@ The scene generator selects the active pipeline's default shader (or Standard fo
 
 Scene2 already contains the forest encounter. See [its setup notes](Assets/VRAnimationTemplate/ForestEncounter/README.md) for timing, regeneration, and rendering limitations. The character uses rigid meshes attached to joints. It is a procedural interpretation of the concept; standalone Quest performance still needs profiling.
 
-Each generated chapter contains a `Chapter Director` and an `Animation Placeholder` object.
+Each template-generated chapter contains a `Chapter Director` and an `Animation Placeholder` object. In the included Scene2, the forest encounter replaces that placeholder.
 
 - Delete or disable `Animation Placeholder`.
 - Add a Timeline/Playable Director, Animator, video player, or your own scene objects.
@@ -62,6 +62,16 @@ Scene names are centralized in `VRSceneFlow.cs`. If you rename scenes, update it
 Scene1 includes a **Rain VFX** object that runs during Play mode. Its **Rain Effect** component controls the emission area, height, drops per second, velocity, surface layers, and ripple size/lifetime. The generator also includes this effect when rebuilding Scene1.
 
 Drops create expanding, fading rings where they hit non-trigger 3D colliders, including the floor and animated placeholder. Add a Collider to imported surfaces that should receive rain impacts; a Rigidbody is not required. Rings follow moving surfaces. The effect uses a URP shader, a bounded pool, and one combined mesh without per-drop GameObjects. Profile on the target headset and reduce Drops Per Second if needed.
+
+## Scene2 forest robot encounter
+
+Scene2 places the viewer at human scale in a dense North American mountain conifer forest at night. An approximately **29-metre robot** rises above the surrounding canopy. The environment includes moonlight, fog, drifting ground mist, rocks, ferns, fallen timber, and synthesized wind and footfall audio.
+
+The sequence starts automatically: the robot looks around with visible searchlight-eye beams, takes one step, then turns toward the viewer. It blinks twice, softens its beams, and tilts its head while looking at the headset position. Its metal parts are attached to an articulated joint hierarchy and animated procedurally by `ForestRobotEncounter`; this sequence does not use a Timeline asset.
+
+**Chapter Director** is set to **30 seconds** with **Auto Advance** enabled, so Scene2 proceeds to Scene3 when the timer finishes. The original forward-facing VR UI and visible gaze reticle provide **Menu** and **Skip / Next** controls throughout the sequence. The chapter timer runs independently of the robot animation.
+
+To regenerate the encounter, choose **Tools > VR Animation Template > Build Forest Encounter in Scene 2**. This replaces the forest root and regenerates its assets; preserve manual edits first. See the [Scene2 setup notes](Assets/VRAnimationTemplate/ForestEncounter/README.md) for detailed timing and implementation notes. The scene is a stylized procedural interpretation of the concept, with simulated volumetric beams; Quest performance and headset comfort still require device testing.
 
 ## Controls
 
