@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.0.4
+
+- Replace Scene2's placeholder with a stylized mountain forest and approximately 29-metre articulated robot.
+- Add a 30-second scan, single stride, viewer discovery, and blinking searchlight-eye sequence.
+- Include moonlight, fog, drifting ground mist, procedural materials, and synthesized wind and footfall audio.
+- Preserve the original forward-facing chapter UI and visible gaze reticle; automatically advance to Scene3 after 30 seconds.
+- Add a repeatable Scene2 forest builder and setup notes.
+- Validation: Unity compilation, rendered previews, 121 animation samples, planted-foot stability, blinking, and final gaze checks passed. Final navigation settings were checked against Scene1 and the scene-flow order. Quest performance and headset comfort remain untested.
+
 ## 1.0.3
 
 - Add falling rain streaks and expanding, fading impact ripples to Scene1.

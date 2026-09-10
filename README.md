@@ -1,6 +1,6 @@
 # Meta Quest VR Animation Template
 
-Version **1.0.3** adds rain and surface-impact ripples to Scene1, including adjustable intensity and ripples that follow moving colliders. The URP setup and world-space chapter menu fixes from earlier versions are included.
+Version **1.0.4** adds a stylized nighttime mountain forest and giant articulated robot to Scene2. Its 30-second sequence includes scanning searchlight eyes, one step, viewer discovery, and blinking, then advances automatically to Scene3. The original chapter UI and gaze reticle remain in front of the viewer. Scene1 rain and earlier URP/menu fixes are included.
 
 A small, editable Unity project template for a linear VR presentation:
 
@@ -27,7 +27,7 @@ The generated experience includes:
 1. Add this folder to Unity Hub and open it.
 2. Let Unity restore the Unity packages.
 3. Add **Meta XR All-in-One SDK** from Package Manager > My Assets. This manual step avoids registry/certificate differences between machines.
-4. In Unity, choose **Tools > VR Animation Template > Generate All Scenes**.
+4. Use the included scenes. **Tools > VR Animation Template > Generate All Scenes** resets them to template defaults; if you use it, then run **Build Forest Encounter in Scene 2** from the same menu to restore the forest.
 5. Open `Assets/VRAnimationTemplate/Scenes/StartMenu.unity`.
 6. Press Play. Look at a button for about one second to activate it.
 7. Open **Meta > Tools > Project Setup Tool**, select the Meta/Android target, then choose **Fix All** and **Apply All**.
@@ -45,6 +45,8 @@ If materials appear pink, confirm that **Default Render Pipeline** references **
 The scene generator selects the active pipeline's default shader (or Standard for the Built-in pipeline) and updates existing generated materials. Generating all scenes overwrites the template scenes, so preserve any custom scene edits before regenerating.
 
 ## Adding your animation
+
+Scene2 already contains the forest encounter. See [its setup notes](Assets/VRAnimationTemplate/ForestEncounter/README.md) for timing, regeneration, and rendering limitations. The character uses rigid meshes attached to joints. It is a procedural interpretation of the concept; standalone Quest performance still needs profiling.
 
 Each generated chapter contains a `Chapter Director` and an `Animation Placeholder` object.
 
