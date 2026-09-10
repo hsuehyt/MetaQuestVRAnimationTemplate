@@ -217,7 +217,7 @@ namespace VRAnimationTemplate.Editor
 
             Image footer = CreatePanel(canvas.transform, new Color(0.015f, 0.02f, 0.04f, 0.76f), new Vector2(760f, 100f));
             footer.rectTransform.anchorMin = footer.rectTransform.anchorMax = new Vector2(0.5f, 0f);
-            footer.rectTransform.anchoredPosition = new Vector2(0f, 70f);
+            footer.rectTransform.anchoredPosition = new Vector2(0f, -400f);
             Button menu = CreateButton(footer.transform, "MENU", new Vector2(-190f, 0f), new Vector2(290f, 64f), new Color(0.14f, 0.17f, 0.25f));
             UnityEventTools.AddPersistentListener(menu.onClick, flow.ReturnToMenu);
             Button skip = CreateButton(footer.transform, "SKIP / NEXT", new Vector2(190f, 0f), new Vector2(330f, 64f), new Color(0.10f, 0.55f, 0.85f));

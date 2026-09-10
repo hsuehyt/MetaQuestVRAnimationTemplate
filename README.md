@@ -1,6 +1,6 @@
 # Meta Quest VR Animation Template
 
-Version **1.0.1** includes a configured Universal Render Pipeline (URP) asset and fixes pink generated materials.
+Version **1.0.2** fixes the chapter menus in world space for head-gaze selection and lowers their menu panels. The configured Universal Render Pipeline (URP) setup from 1.0.1 is included.
 
 A small, editable Unity project template for a linear VR presentation:
 
