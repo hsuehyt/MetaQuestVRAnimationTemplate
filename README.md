@@ -1,5 +1,7 @@
 # Meta Quest VR Animation Template
 
+Version **1.0.1** includes a configured Universal Render Pipeline (URP) asset and fixes pink generated materials.
+
 A small, editable Unity project template for a linear VR presentation:
 
 `Start Menu -> Scene 1 -> Scene 2 -> Scene 3 -> End Credits`
@@ -33,6 +35,14 @@ The generated experience includes:
 9. Connect the headset and select **Build And Run**.
 
 If you only need portable OpenXR and not Meta-specific features, you may skip the Meta SDK and configure OpenXR under **Project Settings > XR Plug-in Management**.
+
+## Render pipeline setup
+
+The project includes `Assets/QuestURP.asset` and its renderer, assigned under **Edit > Project Settings > Graphics > Default Render Pipeline**. Quality levels inherit this setting when their Render Pipeline Asset is None.
+
+If materials appear pink, confirm that **Default Render Pipeline** references **QuestURP**. To create a replacement, use **Assets > Create > Rendering > URP Asset (with Universal Renderer)** and assign the resulting pipeline asset in Graphics settings. Keep the accompanying renderer asset.
+
+The scene generator selects the active pipeline's default shader (or Standard for the Built-in pipeline) and updates existing generated materials. Generating all scenes overwrites the template scenes, so preserve any custom scene edits before regenerating.
 
 ## Adding your animation
 

@@ -4,6 +4,7 @@ using UnityEditor.Events;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -116,16 +117,21 @@ namespace VRAnimationTemplate.Editor
 
         private static Material CreateMaterial(string name, Color color)
         {
+            RenderPipelineAsset pipeline = GraphicsSettings.currentRenderPipeline;
+            Shader shader = pipeline != null ? pipeline.defaultShader : Shader.Find("Standard");
+            if (shader == null)
+                throw new System.InvalidOperationException("The active render pipeline has no default material shader.");
+
             string path = $"{MaterialFolder}/{name.Replace(' ', '_')}.mat";
             Material existing = AssetDatabase.LoadAssetAtPath<Material>(path);
             if (existing != null)
             {
+                existing.shader = shader;
                 existing.color = color;
                 EditorUtility.SetDirty(existing);
                 return existing;
             }
 
-            Shader shader = Shader.Find("Universal Render Pipeline/Lit") ?? Shader.Find("Standard");
             var material = new Material(shader) { name = name, color = color };
             AssetDatabase.CreateAsset(material, path);
             return material;
