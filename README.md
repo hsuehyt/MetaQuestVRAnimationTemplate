@@ -1,24 +1,37 @@
 # Meta Quest VR Animation Template
 
-Version **1.0.4** adds a stylized nighttime mountain forest and giant articulated robot to Scene2. Its 30-second sequence includes scanning searchlight eyes, one step, viewer discovery, and blinking, then advances automatically to Scene3. The original chapter UI and gaze reticle remain in front of the viewer. Scene1 rain and earlier URP/menu fixes are included.
+A Unity template for creating sequential VR animation experiences on Meta Quest. It provides gaze-based navigation, timed scene transitions, and editable example scenes so you can build a presentation around your own animations.
 
-A small, editable Unity project template for a linear VR presentation:
+The experience follows a five-scene sequence:
 
 `Start Menu -> Scene 1 -> Scene 2 -> Scene 3 -> End Credits`
 
-The generated experience includes:
+Current version: **v1.0.4**. See the [changelog](CHANGELOG.md) for version history.
+
+## Features
 
 - A head-gaze start menu that works without controller setup
 - Three timed animation chapters
 - Skip, menu, replay, and quit controls
 - A reusable scene-flow controller
 - Example procedural animation that can be replaced with Timeline, Animator, or video
+- Rain with surface-impact ripples and an animated forest robot encounter
 - A scrolling end-credit scene
-- OpenXR and Meta XR Core SDK package references
+- An OpenXR head-pose driver and URP rendering setup, with optional Meta SDK integration
+
+## Scene overview
+
+| Scene | Purpose |
+| --- | --- |
+| StartMenu | Gaze-operated Start and Quit buttons. |
+| Scene1 | Rain, surface-impact ripples, and an animated placeholder. |
+| Scene2 | A 30-second nighttime forest encounter with a giant articulated robot. |
+| Scene3 | An animation placeholder for your next chapter. |
+| EndCredits | Scrolling credits with Replay and Menu controls. |
 
 ## Requirements
 
-- Unity `6000.3.10f1` or a compatible Unity 6 release
+- Unity `6000.3.23f1` (the project's recorded editor version)
 - Android Build Support, Android SDK & NDK Tools, and OpenJDK installed through Unity Hub
 - A Meta Quest headset in Developer Mode, or Meta XR Simulator
 
@@ -44,19 +57,6 @@ If materials appear pink, confirm that **Default Render Pipeline** references **
 
 The scene generator selects the active pipeline's default shader (or Standard for the Built-in pipeline) and updates existing generated materials. Generating all scenes overwrites the template scenes, so preserve any custom scene edits before regenerating.
 
-## Adding your animation
-
-Scene2 already contains the forest encounter. See [its setup notes](Assets/VRAnimationTemplate/ForestEncounter/README.md) for timing, regeneration, and rendering limitations. The character uses rigid meshes attached to joints. It is a procedural interpretation of the concept; standalone Quest performance still needs profiling.
-
-Each template-generated chapter contains a `Chapter Director` and an `Animation Placeholder` object. In the included Scene2, the forest encounter replaces that placeholder.
-
-- Delete or disable `Animation Placeholder`.
-- Add a Timeline/Playable Director, Animator, video player, or your own scene objects.
-- Set `Chapter Director > Duration Seconds` to the desired chapter length.
-- Disable `Auto Advance` if the chapter should wait for the viewer to press **Continue**.
-
-Scene names are centralized in `VRSceneFlow.cs`. If you rename scenes, update its default scene list or the serialized list in the Inspector.
-
 ## Scene1 rain
 
 Scene1 includes a **Rain VFX** object that runs during Play mode. Its **Rain Effect** component controls the emission area, height, drops per second, velocity, surface layers, and ripple size/lifetime. The generator also includes this effect when rebuilding Scene1.
@@ -72,6 +72,19 @@ The sequence starts automatically: the robot looks around with visible searchlig
 **Chapter Director** is set to **30 seconds** with **Auto Advance** enabled, so Scene2 proceeds to Scene3 when the timer finishes. The original forward-facing VR UI and visible gaze reticle provide **Menu** and **Skip / Next** controls throughout the sequence. The chapter timer runs independently of the robot animation.
 
 To regenerate the encounter, choose **Tools > VR Animation Template > Build Forest Encounter in Scene 2**. This replaces the forest root and regenerates its assets; preserve manual edits first. See the [Scene2 setup notes](Assets/VRAnimationTemplate/ForestEncounter/README.md) for detailed timing and implementation notes. The scene is a stylized procedural interpretation of the concept, with simulated volumetric beams; Quest performance and headset comfort still require device testing.
+
+## Adding your animation and setting scene duration
+
+Each animation chapter has a `Chapter Director`. Scene1 and Scene3 contain an `Animation Placeholder`; Scene2 contains the forest encounter instead.
+
+1. Delete or disable the example animation you want to replace.
+2. Add your Timeline/Playable Director, Animator, video player, or other scene content.
+3. Set **Chapter Director > Duration Seconds** to the desired chapter length.
+4. Enable **Auto Advance** to load the next scene when the timer ends, or disable it to wait for **Skip / Next** or a transition triggered by your sequence.
+
+The chapter timer starts when the scene runs and is independent of animation playback. If your sequence pauses or starts later, its duration alone will not keep it synchronized with this timer. The existing `Chapter Director.ContinueNow()` method can be called by your sequence to advance explicitly.
+
+Scene names are centralized in `VRSceneFlow.cs`. If you rename scenes, update the serialized scene list in each scene and its defaults in the script.
 
 ## Controls
 
