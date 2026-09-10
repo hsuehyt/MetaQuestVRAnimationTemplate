@@ -1,6 +1,6 @@
 # Meta Quest VR Animation Template
 
-Version **1.0.2** fixes the chapter menus in world space for head-gaze selection and lowers their menu panels. The configured Universal Render Pipeline (URP) setup from 1.0.1 is included.
+Version **1.0.3** adds rain and surface-impact ripples to Scene1, including adjustable intensity and ripples that follow moving colliders. The URP setup and world-space chapter menu fixes from earlier versions are included.
 
 A small, editable Unity project template for a linear VR presentation:
 
@@ -54,6 +54,12 @@ Each generated chapter contains a `Chapter Director` and an `Animation Placehold
 - Disable `Auto Advance` if the chapter should wait for the viewer to press **Continue**.
 
 Scene names are centralized in `VRSceneFlow.cs`. If you rename scenes, update its default scene list or the serialized list in the Inspector.
+
+## Scene1 rain
+
+Scene1 includes a **Rain VFX** object that runs during Play mode. Its **Rain Effect** component controls the emission area, height, drops per second, velocity, surface layers, and ripple size/lifetime. The generator also includes this effect when rebuilding Scene1.
+
+Drops create expanding, fading rings where they hit non-trigger 3D colliders, including the floor and animated placeholder. Add a Collider to imported surfaces that should receive rain impacts; a Rigidbody is not required. Rings follow moving surfaces. The effect uses a URP shader, a bounded pool, and one combined mesh without per-drop GameObjects. Profile on the target headset and reduce Drops Per Second if needed.
 
 ## Controls
 

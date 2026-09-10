@@ -89,6 +89,16 @@ namespace VRAnimationTemplate.Editor
 
         private static void CreateEnvironment(int sceneIndex, Color accent)
         {
+            if (sceneIndex == 1)
+            {
+                RainEffect rain = new GameObject("Rain VFX").AddComponent<RainEffect>();
+                rain.transform.position = new Vector3(0f, 0f, 2f);
+                var settings = new SerializedObject(rain);
+                settings.FindProperty("rainMaterial").objectReferenceValue =
+                    AssetDatabase.LoadAssetAtPath<Material>($"{MaterialFolder}/Rain.mat");
+                settings.ApplyModifiedPropertiesWithoutUndo();
+            }
+
             var lightObject = new GameObject("Key Light");
             lightObject.transform.rotation = Quaternion.Euler(48f, -32f, 0f);
             Light light = lightObject.AddComponent<Light>();

@@ -1925,6 +1925,55 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1992173110}
   m_CullTransparentMesh: 1
+--- !u!1 &2088000001
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2088000002}
+  - component: {fileID: 2088000003}
+  m_Layer: 0
+  m_Name: Rain VFX
+  m_TagString: Untagged
+  m_IsActive: 1
+--- !u!4 &2088000002
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2088000001}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+--- !u!114 &2088000003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2088000001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a984694ccdf7473ba5ef82991b264e31, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  rainMaterial: {fileID: 2100000, guid: 789364bde29c46be84af9ef9dd465264, type: 2}
+  area: {x: 10, y: 10}
+  height: 6
+  dropsPerSecond: 150
+  velocity: {x: 0.35, y: -7, z: 0.1}
+  surfaceLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  rippleLifetime: 0.65
+  rippleRadius: 0.14
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1938,3 +1987,4 @@ SceneRoots:
   - {fileID: 614019468}
   - {fileID: 1096078968}
   - {fileID: 252401815}
+  - {fileID: 2088000002}
