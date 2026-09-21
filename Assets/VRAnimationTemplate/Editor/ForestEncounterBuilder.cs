@@ -87,9 +87,10 @@ namespace VRAnimationTemplate.Editor
             var controller=world.gameObject.AddComponent<ForestRobotEncounter>();
             Robot(world,controller);
             Audio(world,controller);
+            if(File.Exists(ForestRobotMocapBuilder.SourcePath)) ForestRobotMocapBuilder.Configure(controller);
             foreach(var director in Object.FindObjectsByType<VRChapterDirector>(FindObjectsSortMode.None))
             {
-                var so=new SerializedObject(director); so.FindProperty("durationSeconds").floatValue=30; so.FindProperty("autoAdvance").boolValue=true; so.ApplyModifiedPropertiesWithoutUndo();
+                var so=new SerializedObject(director); so.FindProperty("durationSeconds").floatValue=controller.ChapterDuration; so.FindProperty("autoAdvance").boolValue=true; so.ApplyModifiedPropertiesWithoutUndo();
             }
             GameObject ui=GameObject.Find("VR UI");
             var reticle=GameObject.Find("Gaze Reticle"); if(reticle) {var image=reticle.GetComponent<Image>();image.enabled=true;image.type=Image.Type.Simple;image.fillAmount=1;}
@@ -219,10 +220,10 @@ namespace VRAnimationTemplate.Editor
                 Transform wrist=Node("Wrist",elbow,new Vector3(0,-4.8f,0)); Part("Palm",wrist,new Vector3(0,-.9f,0),new Vector3(2.8f,2.1f,1.5f),dark);
                 for(int f=0;f<4;f++)
                 {
-                    Transform finger=Node("Finger "+f,wrist,new Vector3((f-1.5f)*.65f,-1.8f,0));
-                    for(int k=0;k<3;k++) { Part("Phalanx",finger,new Vector3(0,-.4f,0),new Vector3(.5f,.8f,.65f),steel); finger=Node("Finger Joint",finger,new Vector3(0,-.75f,0)); finger.localRotation=Quaternion.Euler(-12,0,0); }
+                    Transform finger=Node("Finger "+f,wrist,new Vector3(s*(f-1.5f)*.65f,-1.8f,0));
+                    for(int k=0;k<3;k++) { Part("Phalanx",finger,new Vector3(0,-.4f,0),new Vector3(.5f,.8f,.65f),steel); finger=Node("Finger Joint",finger,new Vector3(0,-.75f,0)); finger.localRotation=Quaternion.Euler(12,0,0); }
                 }
-                Transform thumb=Node("Thumb",wrist,new Vector3(-s*1.55f,-.4f,.1f)); thumb.localRotation=Quaternion.Euler(-20,0,-s*35);
+                Transform thumb=Node("Thumb",wrist,new Vector3(-s*1.55f,-.4f,.1f)); thumb.localRotation=Quaternion.Euler(20,0,-s*35);
                 Part("Thumb Segment",thumb,new Vector3(0,-.7f,0),new Vector3(.7f,1.4f,.8f),steel);
                 if(s<0) { c.leftHip=hip;c.leftKnee=knee;c.leftAnkle=ankle;c.leftShoulder=shoulder; } else {c.rightHip=hip;c.rightKnee=knee;c.rightAnkle=ankle;c.rightShoulder=shoulder;}
             }
@@ -264,6 +265,7 @@ namespace VRAnimationTemplate.Editor
         }
         static void VerifyAndRender(ForestRobotEncounter c,Camera camera)
         {
+            if(c.lookAroundMotion) {ForestRobotMocapBuilder.ValidateAndRender(c,camera);return;}
             Directory.CreateDirectory("Artifacts/ForestEncounter");
             foreach(var mb in Object.FindObjectsByType<Transform>(FindObjectsSortMode.None))
                 if(GameObjectUtility.GetMonoBehavioursWithMissingScriptCount(mb.gameObject)>0) throw new Exception("Missing script: "+mb.name);

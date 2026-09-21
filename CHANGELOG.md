@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.0.6
+
+- Replace Scene2's scripted robot stride with the supplied Look Around mocap, retargeted to the giant's rigid joints.
+- Face the robot toward the viewer and loop the capture at 30% speed, approximately 21.11 seconds per cycle, with both feet planted.
+- Correct inward finger curls and mirror finger order so the index fingers sit beside the thumbs; rebaking preserves the fixes.
+- Repeat eye blinks each cycle and soften searchlight beams when aimed toward the viewer.
+- Preserve the chapter UI and 30-second automatic transition to Scene3; extend the timer at startup if a slower playback speed needs more time.
+- Include the source FBX, baked animation, mocap builder, and updated setup notes. Scene3's v1.0.5 content is retained.
+- Validation: Unity Play mode verified mocap playback; 301 sampled poses and hand closeups verified corrected finger flexion, foot stability, facing direction, and looping. Headset performance remains untested.
+
 ## 1.0.5
 
 - Replace Scene3's placeholder with a 2-metre looping belly-dance character in front of the viewer.

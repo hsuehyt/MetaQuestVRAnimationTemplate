@@ -14,6 +14,8 @@ namespace VRAnimationTemplate
         private float elapsed;
         private bool finished;
 
+        public void SetDuration(float seconds) => durationSeconds = Mathf.Max(.1f, seconds);
+
         private void Update()
         {
             if (finished)

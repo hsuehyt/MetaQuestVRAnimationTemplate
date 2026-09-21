@@ -6,7 +6,7 @@ The experience follows a five-scene sequence:
 
 `Start Menu -> Scene 1 -> Scene 2 -> Scene 3 -> End Credits`
 
-Current version: **v1.0.5**. See the [changelog](CHANGELOG.md) for version history.
+Current version: **v1.0.6**. See the [changelog](CHANGELOG.md) for version history.
 
 ## Features
 
@@ -67,9 +67,9 @@ Drops create expanding, fading rings where they hit non-trigger 3D colliders, in
 
 Scene2 places the viewer at human scale in a dense North American mountain conifer forest at night. An approximately **29-metre robot** rises above the surrounding canopy. The environment includes moonlight, fog, drifting ground mist, rocks, ferns, fallen timber, and synthesized wind and footfall audio.
 
-The sequence starts automatically: the robot looks around with visible searchlight-eye beams, takes one step, then turns toward the viewer. It blinks twice, softens its beams, and tilts its head while looking at the headset position. Its metal parts are attached to an articulated joint hierarchy and animated procedurally by `ForestRobotEncounter`; this sequence does not use a Timeline asset.
+The robot faces the viewer and plays the supplied `Look Around.fbx` mocap at 30% speed, with visible searchlight-eye beams. It stays in place and loops the look-around motion, blinking twice near the end of each cycle. Its metal parts follow an articulated joint hierarchy driven by a retargeted animation clip through `ForestRobotEncounter`; this sequence does not use a Timeline asset. Adjust **Motion Speed** on the **Forest Encounter** component to change playback speed.
 
-**Chapter Director** is set to **30 seconds** with **Auto Advance** enabled, so Scene2 proceeds to Scene3 when the timer finishes. The original forward-facing VR UI and visible gaze reticle provide **Menu** and **Skip / Next** controls throughout the sequence. The chapter timer runs independently of the robot animation.
+**Chapter Director** is set to **30 seconds** with **Auto Advance** enabled, so Scene2 proceeds to Scene3 when the timer finishes. At scene startup, the encounter extends the timer if a slower motion speed needs more time for the full first cycle. The forward-facing VR UI and visible gaze reticle provide **Menu** and **Skip / Next** controls throughout the sequence.
 
 To regenerate the encounter, choose **Tools > VR Animation Template > Build Forest Encounter in Scene 2**. This replaces the forest root and regenerates its assets; preserve manual edits first. See the [Scene2 setup notes](Assets/VRAnimationTemplate/ForestEncounter/README.md) for detailed timing and implementation notes. The scene is a stylized procedural interpretation of the concept, with simulated volumetric beams; Quest performance and headset comfort still require device testing.
 

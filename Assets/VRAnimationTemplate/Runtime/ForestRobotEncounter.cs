@@ -1,8 +1,10 @@
 using UnityEngine;
+using UnityEngine.Animations;
+using UnityEngine.Playables;
 
 namespace VRAnimationTemplate
 {
-    /// <summary>Rigid bone animation in metres. One step, discovery, then a persistent attentive idle.</summary>
+    /// <summary>Plays retargeted giant-robot mocap with searchlights and viewer gaze; retains the original procedural sequence as a fallback.</summary>
     public sealed class ForestRobotEncounter : MonoBehaviour
     {
         public Transform robot, hips, torso, head;
@@ -12,19 +14,37 @@ namespace VRAnimationTemplate
         public Light[] searchlights;
         public AudioSource footfall;
         public Transform[] nearbyFoliage;
+        [Header("Retargeted look-around mocap")]
+        public AnimationClip lookAroundMotion;
+        [Range(.1f, 1f)] public float motionSpeed = .3f;
+        [Min(0)] public float motionLeadIn = 1.5f;
+        public float MotionEnd => motionLeadIn + (lookAroundMotion ? lookAroundMotion.length / Mathf.Max(.1f, motionSpeed) : 0);
+        public float ChapterDuration => lookAroundMotion ? Mathf.Max(30, MotionEnd + 5) : 30;
         [Range(0, 40)] public float previewSeconds;
         public float Elapsed { get; private set; }
         Vector3 start;
         bool sounded;
         MaterialPropertyBlock beamProperties;
+        PlayableGraph motionGraph;
+        AnimationClipPlayable motionPlayable;
 
-        void Awake() { start = robot.localPosition; beamProperties = new MaterialPropertyBlock(); }
+        void Awake()
+        {
+            start = robot.localPosition; beamProperties = new MaterialPropertyBlock();
+            if (lookAroundMotion)
+            {
+                var director = FindFirstObjectByType<VRChapterDirector>();
+                if (director) director.SetDuration(ChapterDuration);
+            }
+        }
+        void OnDisable() { if (motionGraph.IsValid()) motionGraph.Destroy(); }
         void Update() { Elapsed += Time.deltaTime; Sample(Elapsed); }
         static float Ease(float t, float a, float b) => Mathf.SmoothStep(0, 1, Mathf.InverseLerp(a, b, t));
 
         public void Sample(float t)
         {
             if (robot == null) return;
+            if (lookAroundMotion) { SampleMocap(t); return; }
             if (!Application.isPlaying) start = new Vector3(0, 0, 29);
             float step = Ease(t, 15, 19);
             float lift = Mathf.Sin(step * Mathf.PI);
@@ -58,6 +78,48 @@ namespace VRAnimationTemplate
             if (t >= 18.9f && !sounded && Application.isPlaying) { sounded = true; if (footfall) footfall.Play(); }
             float tremble = t > 18.9f && t < 21 ? Mathf.Sin((t - 18.9f) * 24) * Mathf.Exp(-(t - 18.9f) * 2) * 2 : 0;
             foreach (Transform plant in nearbyFoliage) plant.localRotation = Quaternion.Euler(tremble, 0, tremble * .5f);
+        }
+
+        void SampleMocap(float t)
+        {
+            float cycleDuration = lookAroundMotion.length / Mathf.Max(.1f, motionSpeed);
+            float cycleTime = Mathf.Repeat(Mathf.Max(0, t - motionLeadIn), cycleDuration);
+            float clipTime = cycleTime * Mathf.Max(.1f, motionSpeed);
+            if (Application.isPlaying)
+            {
+                if (!motionGraph.IsValid())
+                {
+                    var animator = robot.GetComponent<Animator>();
+                    if (!animator) animator = robot.gameObject.AddComponent<Animator>();
+                    animator.applyRootMotion = false;
+                    animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
+                    motionGraph = PlayableGraph.Create("Giant Look Around");
+                    motionGraph.SetTimeUpdateMode(DirectorUpdateMode.Manual);
+                    motionPlayable = AnimationClipPlayable.Create(motionGraph, lookAroundMotion);
+                    motionPlayable.SetApplyFootIK(false);
+                    var output = AnimationPlayableOutput.Create(motionGraph, "Robot joints", animator);
+                    output.SetSourcePlayable(motionPlayable); motionGraph.Play();
+                }
+                motionPlayable.SetTime(clipTime); motionGraph.Evaluate(0);
+            }
+            else lookAroundMotion.SampleAnimation(robot.gameObject, clipTime);
+
+            // Preserve the captured head movement on every loop; soften beams when facing the viewer.
+            Vector3 viewer = Camera.main ? Camera.main.transform.position : new Vector3(0, 1.65f, 0);
+            float attention = Mathf.SmoothStep(0, 1, Mathf.InverseLerp(.85f, .98f,
+                Vector3.Dot(head.forward, (viewer - head.position).normalized)));
+            float blinkTime = cycleTime - (cycleDuration - .9f);
+            bool blink = (blinkTime > 0 && blinkTime < .18f) || (blinkTime > .45f && blinkTime < .68f);
+            float brightness = blink ? 0 : Mathf.Lerp(.6f, .10f, attention);
+            if (beamProperties == null) beamProperties = new MaterialPropertyBlock();
+            beamProperties.SetFloat("_Strength", brightness);
+            foreach (Transform eye in eyes) eye.localScale = new Vector3(.62f, blink ? .035f : .62f, .18f);
+            foreach (Transform beam in beams)
+            {
+                beam.gameObject.SetActive(!blink);
+                beam.GetComponent<Renderer>().SetPropertyBlock(beamProperties);
+            }
+            foreach (Light light in searchlights) light.intensity = brightness * 6;
         }
 
         void PoseLeg(Transform hip, Transform knee, Transform ankle, float footHeight, float footZ)
