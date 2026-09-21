@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.0.5
+
+- Replace Scene3's placeholder with a 2-metre looping belly-dance character in front of the viewer.
+- Include the skinned FBX and animation controller, with belly jiggle amount 2 baked to joints.
+- Add procedural tube fur, an undercoat shader, inertial strand motion, and approximate body collision.
+- Expose fur colors, density, length, thickness, taper, automatic segments, and motion controls in the Inspector.
+- Save the current blue/magenta 2,000-strand preset as defaults and move Reset Settings to Defaults below Collision volumes.
+- Keep Scene3 looping with manual Menu and Skip / Next navigation.
+- Document PC-connected Quest usage, shared groom editing, and collision/performance limitations. Headset performance remains unverified.
+
 ## 1.0.4
 
 - Replace Scene2's placeholder with a stylized mountain forest and approximately 29-metre articulated robot.
@@ -30,3 +40,4 @@
 - Choose generated material shaders using the active render pipeline instead of the presence of the URP package.
 - Update existing generated materials to the selected shader during scene generation.
 - Document render pipeline setup and pink-material troubleshooting.
+

@@ -6,12 +6,12 @@ The experience follows a five-scene sequence:
 
 `Start Menu -> Scene 1 -> Scene 2 -> Scene 3 -> End Credits`
 
-Current version: **v1.0.4**. See the [changelog](CHANGELOG.md) for version history.
+Current version: **v1.0.5**. See the [changelog](CHANGELOG.md) for version history.
 
 ## Features
 
 - A head-gaze start menu that works without controller setup
-- Three timed animation chapters
+- Three animation chapters with optional timed transitions
 - Skip, menu, replay, and quit controls
 - A reusable scene-flow controller
 - Example procedural animation that can be replaced with Timeline, Animator, or video
@@ -26,7 +26,7 @@ Current version: **v1.0.4**. See the [changelog](CHANGELOG.md) for version histo
 | StartMenu | Gaze-operated Start and Quit buttons. |
 | Scene1 | Rain, surface-impact ripples, and an animated placeholder. |
 | Scene2 | A 30-second nighttime forest encounter with a giant articulated robot. |
-| Scene3 | An animation placeholder for your next chapter. |
+| Scene3 | A life-size dancing character with baked belly jiggle and adjustable procedural fur; loops until Skip / Next. |
 | EndCredits | Scrolling credits with Replay and Menu controls. |
 
 ## Requirements
@@ -73,9 +73,23 @@ The sequence starts automatically: the robot looks around with visible searchlig
 
 To regenerate the encounter, choose **Tools > VR Animation Template > Build Forest Encounter in Scene 2**. This replaces the forest root and regenerates its assets; preserve manual edits first. See the [Scene2 setup notes](Assets/VRAnimationTemplate/ForestEncounter/README.md) for detailed timing and implementation notes. The scene is a stylized procedural interpretation of the concept, with simulated volumetric beams; Quest performance and headset comfort still require device testing.
 
+## Scene3 furry dancer
+
+Scene3 contains a **2-metre** character in front of the viewer, playing an approximately **18.67-second** looping belly dance. Belly jiggle amount **2** is baked into the exported joints. Auto Advance is disabled so the dance repeats until **Skip / Next**; Menu remains available.
+
+The current fur preset targets **Quest connected to a PC**. It uses 2,000 opaque tube strands plus an undercoat, blue roots and skin, and magenta tips. Strands are 15–35 cm long and 30–50 mm in diameter, with zero taper. Automatic segmentation uses a 7.5 cm target, 2–8 segments, and four tube sides. Palms and soles are excluded using a surface mask.
+
+Select **Dancing Fat Man > Fur** in the Hierarchy. The **Dancer Fur** Inspector exposes colors (including bare skin), strand count, length up to 100 cm, diameter, taper, randomness, and segment settings. Outside Play mode, edit these settings and click **Apply Fur Settings**, then save. The groom asset is shared: changing it affects other instances using the same asset. Applying updates the selected coat's preview; it does not automatically overwrite the reusable prefab.
+
+Motion controls can be adjusted during playback. Defaults are inertia **0.9**, stiffness **0.5**, gravity **0.4**, with simulation and body collision enabled. **Reset Settings to Defaults** appears below **Collision volumes** and resets appearance and motion settings; click Apply Fur Settings to rebuild the coat afterward. The fitted collision volumes are preserved.
+
+Fur follows the skinned body with damped particle motion. Collision uses fitted body volumes and root surface planes, so some penetration is possible; strands can pass through each other. Profile the result on your PC and headset before increasing strand count, length, segments, or tube sides. Standalone Quest performance has not been validated.
+
+The character FBX, controller, materials, groom, preview mesh, and prefabs are under `Assets/VRAnimationTemplate/DancingFatMan`. Open the saved Scene3 directly to retain its current setup. The Tools menu's scene and character builders replace generated content, so preserve custom edits before using them.
+
 ## Adding your animation and setting scene duration
 
-Each animation chapter has a `Chapter Director`. Scene1 and Scene3 contain an `Animation Placeholder`; Scene2 contains the forest encounter instead.
+Each animation chapter has a `Chapter Director`. Scene1 contains an `Animation Placeholder`; Scene2 contains the forest encounter and Scene3 contains the furry dancer.
 
 1. Delete or disable the example animation you want to replace.
 2. Add your Timeline/Playable Director, Animator, video player, or other scene content.
@@ -97,3 +111,4 @@ Scene names are centralized in `VRSceneFlow.cs`. If you rename scenes, update th
 - This template uses a lightweight OpenXR head-pose driver and gaze UI so it can run before controller prefabs are configured.
 - For production controller or hand input, install Meta XR Interaction SDK and add the appropriate Meta Building Blocks.
 - Keep shaders mobile-friendly, use baked lighting where possible, and test performance on the headset early.
+

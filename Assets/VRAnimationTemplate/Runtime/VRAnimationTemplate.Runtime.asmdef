@@ -3,7 +3,9 @@
   "rootNamespace": "VRAnimationTemplate",
   "references": [
     "Unity.InputSystem",
-    "UnityEngine.UI"
+    "UnityEngine.UI",
+    "Unity.Burst",
+    "Unity.Collections"
   ],
   "autoReferenced": true
 }
