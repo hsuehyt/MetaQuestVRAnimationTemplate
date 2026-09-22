@@ -20,6 +20,7 @@ namespace VRAnimationTemplate
         [Min(0)] public float motionLeadIn = 1.5f;
         public float MotionEnd => motionLeadIn + (lookAroundMotion ? lookAroundMotion.length / Mathf.Max(.1f, motionSpeed) : 0);
         public float ChapterDuration => lookAroundMotion ? Mathf.Max(30, MotionEnd + 5) : 30;
+        public float MotionCycleDuration => lookAroundMotion ? lookAroundMotion.length / Mathf.Max(.1f, motionSpeed) : 30f;
         [Range(0, 40)] public float previewSeconds;
         public float Elapsed { get; private set; }
         Vector3 start;
@@ -27,18 +28,30 @@ namespace VRAnimationTemplate
         MaterialPropertyBlock beamProperties;
         PlayableGraph motionGraph;
         AnimationClipPlayable motionPlayable;
+        VRChapterDirector director;
 
         void Awake()
         {
             start = robot.localPosition; beamProperties = new MaterialPropertyBlock();
-            if (lookAroundMotion)
-            {
-                var director = FindFirstObjectByType<VRChapterDirector>();
-                if (director) director.SetDuration(ChapterDuration);
-            }
+            director = FindFirstObjectByType<VRChapterDirector>();
+            if (director) director.SetDuration(MotionCycleDuration);
         }
         void OnDisable() { if (motionGraph.IsValid()) motionGraph.Destroy(); }
-        void Update() { Elapsed += Time.deltaTime; Sample(Elapsed); }
+        void Update()
+        {
+            Elapsed += Time.deltaTime;
+            if (!lookAroundMotion && Elapsed >= MotionCycleDuration)
+            {
+                Elapsed = Mathf.Repeat(Elapsed, MotionCycleDuration);
+                sounded = false;
+            }
+
+            if (director)
+                director.SetLoopTime(lookAroundMotion ? Mathf.Max(0f, Elapsed - motionLeadIn) : Elapsed,
+                    MotionCycleDuration);
+
+            Sample(Elapsed);
+        }
         static float Ease(float t, float a, float b) => Mathf.SmoothStep(0, 1, Mathf.InverseLerp(a, b, t));
 
         public void Sample(float t)

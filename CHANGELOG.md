@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.0.7
+
+- Make every gaze-controlled button use the existing gray background when idle and blue background while gazed at, with an immediate color swap.
+- Keep Scene1 and Scene2 running until Menu or Skip / Next is selected; their countdowns restart on each loop.
+- Restart Scene3's countdown with its existing dance loop.
+- Synchronize Scene2's countdown to the robot mocap cycle (about 21.11 seconds at the default speed), including changes to Motion Speed.
+- Preserve the looping behavior when the template scenes or forest encounter are regenerated.
+- Validation: scene settings, button links, and code changes checked; headset playback has not been verified.
+
 ## 1.0.6
 
 - Replace Scene2's scripted robot stride with the supplied Look Around mocap, retargeted to the giant's rigid joints.

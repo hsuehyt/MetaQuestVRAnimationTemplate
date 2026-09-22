@@ -1,6 +1,6 @@
 # Scene 2 — Forest encounter
 
-Open `Assets/VRAnimationTemplate/Scenes/Scene2.unity` and press Play. The sequence starts automatically. In a headset, look up toward the robot; the desktop camera retains its original level orientation. The original VR UI and visible center gaze reticle are restored in front of the viewer, matching Scenes 1 and 3. Look at Menu or Next to activate it. Scene 2 automatically advances to Scene 3 after the 30-second sequence.
+Open Scene2 and press Play. The robot begins its look-around motion automatically. In a headset, look up toward the robot; the desktop camera retains its original level orientation. The forward-facing VR UI and visible center gaze reticle match Scenes 1 and 3. Buttons are gray until gazed at, then turn blue. Scene2 repeats until you activate Menu or Skip / Next.
 
 The robot is approximately 29 metres tall. Mountain conifers reach approximately 20–25 metres above the clearing. The viewer starts at human scale, 29 metres from the robot. Geometry is a stylized procedural interpretation of the concept, with rigid meshes parented to named joints, rather than a skinned character imported from a modeling package.
 
@@ -8,7 +8,7 @@ Motion source: `Assets/VRAnimationTemplate/Mocap/Look Around.fbx`, a 6.333-secon
 
 Finger animation transfers local mocap flexion onto the robot's hinge axes, limited to inward curls, rather than copying world-space finger rotations. Finger order is mirrored so each index finger sits beside its thumb. Rebaking preserves these corrections.
 
-Default timing: 1.5-second lead-in, then continuous approximately 21.11-second mocap loops at 30% speed. Two blinks occur near each loop end. Head movement follows the capture throughout; beams soften whenever the robot looks toward the viewer. Scene3 starts at 30 seconds. The robot root faces the viewer and stays in place; the previous scripted stride and footfall are not played. Adjust `Motion Speed` on the Forest Encounter component before Play. At startup, the chapter duration is extended when necessary to fit the complete slowed first cycle plus five seconds. The camera is never shaken.
+Default timing: a 1.5-second lead-in, then continuous approximately 21.11-second mocap loops at 30% speed. The countdown starts with the motion and resets at each mocap loop; changing Motion Speed also changes its period. Two blinks occur near each loop end. Head movement follows the capture throughout, and beams soften whenever the robot looks toward the viewer. The robot root faces the viewer and stays in place; the previous scripted stride and footfall are not played. The camera is never shaken.
 
 The environment includes moonlight, distance fog, animated translucent ground mist, layered conifers, rocky ground relief, ferns, fallen logs, distant mountain silhouettes, and synthesized wind audio. Eye beams are transparent mesh approximations with spotlights; they soften when aimed toward the viewer. They are not physically accurate volumetric shadows. The supplied FBX is included in the project.
 

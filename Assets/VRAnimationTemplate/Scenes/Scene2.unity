@@ -9068,8 +9068,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71ffdbd1f94b2e540ab9860985ca3a83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: VRAnimationTemplate.Runtime::VRAnimationTemplate.VRChapterDirector
-  durationSeconds: 30
-  autoAdvance: 1
+  durationSeconds: 21.11111
+  autoAdvance: 0
   timeLabel: {fileID: 1251589554}
   progressFill: {fileID: 962941157}
 --- !u!4 &1096078968

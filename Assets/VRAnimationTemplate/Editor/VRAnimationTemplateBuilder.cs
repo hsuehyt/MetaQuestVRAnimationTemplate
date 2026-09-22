@@ -236,7 +236,7 @@ namespace VRAnimationTemplate.Editor
             VRChapterDirector director = new GameObject("Chapter Director").AddComponent<VRChapterDirector>();
             SerializedObject serialized = new SerializedObject(director);
             serialized.FindProperty("durationSeconds").floatValue = 12f;
-            serialized.FindProperty("autoAdvance").boolValue = true;
+            serialized.FindProperty("autoAdvance").boolValue = false;
             serialized.FindProperty("timeLabel").objectReferenceValue = time;
             serialized.FindProperty("progressFill").objectReferenceValue = fill;
             serialized.ApplyModifiedPropertiesWithoutUndo();

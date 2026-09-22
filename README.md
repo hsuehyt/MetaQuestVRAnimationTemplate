@@ -6,7 +6,7 @@ The experience follows a five-scene sequence:
 
 `Start Menu -> Scene 1 -> Scene 2 -> Scene 3 -> End Credits`
 
-Current version: **v1.0.6**. See the [changelog](CHANGELOG.md) for version history.
+Current version: **v1.0.7**. See the [changelog](CHANGELOG.md) for version history.
 
 ## Features
 
@@ -24,8 +24,8 @@ Current version: **v1.0.6**. See the [changelog](CHANGELOG.md) for version histo
 | Scene | Purpose |
 | --- | --- |
 | StartMenu | Gaze-operated Start and Quit buttons. |
-| Scene1 | Rain, surface-impact ripples, and an animated placeholder. |
-| Scene2 | A 30-second nighttime forest encounter with a giant articulated robot. |
+| Scene1 | Rain, surface-impact ripples, and an animated placeholder with a repeating 12-second countdown. |
+| Scene2 | A looping nighttime forest encounter with a giant articulated robot. |
 | Scene3 | A life-size dancing character with baked belly jiggle and adjustable procedural fur; loops until Skip / Next. |
 | EndCredits | Scrolling credits with Replay and Menu controls. |
 
@@ -42,7 +42,7 @@ Current version: **v1.0.6**. See the [changelog](CHANGELOG.md) for version histo
 3. Add **Meta XR All-in-One SDK** from Package Manager > My Assets. This manual step avoids registry/certificate differences between machines.
 4. Use the included scenes. **Tools > VR Animation Template > Generate All Scenes** resets them to template defaults; if you use it, then run **Build Forest Encounter in Scene 2** from the same menu to restore the forest.
 5. Open `Assets/VRAnimationTemplate/Scenes/StartMenu.unity`.
-6. Press Play. Look at a button for about one second to activate it.
+6. Press Play. Buttons are gray until gazed at, then turn blue immediately; hold your gaze for about one second to activate one.
 7. Open **Meta > Tools > Project Setup Tool**, select the Meta/Android target, then choose **Fix All** and **Apply All**.
 8. In **File > Build Profiles**, enable/switch to **Meta Quest**. On Unity versions without that profile, use Android.
 9. Connect the headset and select **Build And Run**.
@@ -69,13 +69,13 @@ Scene2 places the viewer at human scale in a dense North American mountain conif
 
 The robot faces the viewer and plays the supplied `Look Around.fbx` mocap at 30% speed, with visible searchlight-eye beams. It stays in place and loops the look-around motion, blinking twice near the end of each cycle. Its metal parts follow an articulated joint hierarchy driven by a retargeted animation clip through `ForestRobotEncounter`; this sequence does not use a Timeline asset. Adjust **Motion Speed** on the **Forest Encounter** component to change playback speed.
 
-**Chapter Director** is set to **30 seconds** with **Auto Advance** enabled, so Scene2 proceeds to Scene3 when the timer finishes. At scene startup, the encounter extends the timer if a slower motion speed needs more time for the full first cycle. The forward-facing VR UI and visible gaze reticle provide **Menu** and **Skip / Next** controls throughout the sequence.
+**Chapter Director** repeats the approximately **21.11-second** robot motion cycle at the default speed. Its countdown resets when the mocap loop restarts, and changes with Motion Speed. Auto Advance is disabled; use **Menu** or **Skip / Next** to leave Scene2. The forward-facing VR UI and visible gaze reticle remain available throughout.
 
 To regenerate the encounter, choose **Tools > VR Animation Template > Build Forest Encounter in Scene 2**. This replaces the forest root and regenerates its assets; preserve manual edits first. See the [Scene2 setup notes](Assets/VRAnimationTemplate/ForestEncounter/README.md) for detailed timing and implementation notes. The scene is a stylized procedural interpretation of the concept, with simulated volumetric beams; Quest performance and headset comfort still require device testing.
 
 ## Scene3 furry dancer
 
-Scene3 contains a **2-metre** character in front of the viewer, playing an approximately **18.67-second** looping belly dance. Belly jiggle amount **2** is baked into the exported joints. Auto Advance is disabled so the dance repeats until **Skip / Next**; Menu remains available.
+Scene3 contains a **2-metre** character in front of the viewer, playing an approximately **18.67-second** looping belly dance. Belly jiggle amount **2** is baked into the exported joints. Auto Advance is disabled, and the countdown restarts with every dance loop. Use **Skip / Next** or Menu to leave the scene.
 
 The current fur preset targets **Quest connected to a PC**. It uses 2,000 opaque tube strands plus an undercoat, blue roots and skin, and magenta tips. Strands are 15–35 cm long and 30–50 mm in diameter, with zero taper. Automatic segmentation uses a 7.5 cm target, 2–8 segments, and four tube sides. Palms and soles are excluded using a surface mask.
 
@@ -94,9 +94,9 @@ Each animation chapter has a `Chapter Director`. Scene1 contains an `Animation P
 1. Delete or disable the example animation you want to replace.
 2. Add your Timeline/Playable Director, Animator, video player, or other scene content.
 3. Set **Chapter Director > Duration Seconds** to the desired chapter length.
-4. Enable **Auto Advance** to load the next scene when the timer ends, or disable it to wait for **Skip / Next** or a transition triggered by your sequence.
+4. Enable **Auto Advance** to load the next scene when the timer ends, or disable it to restart the countdown every loop while waiting for **Skip / Next** or a transition triggered by your sequence.
 
-The chapter timer starts when the scene runs and is independent of animation playback. If your sequence pauses or starts later, its duration alone will not keep it synchronized with this timer. The existing `Chapter Director.ContinueNow()` method can be called by your sequence to advance explicitly.
+The Scene1 and Scene3 countdowns repeat at their configured Duration Seconds. Scene2 instead follows the robot mocap loop, beginning after its lead-in. For replacement animations, align Duration Seconds with the animation loop yourself. The existing Chapter Director.ContinueNow() method can advance explicitly.
 
 Scene names are centralized in `VRSceneFlow.cs`. If you rename scenes, update the serialized scene list in each scene and its defaults in the script.
 

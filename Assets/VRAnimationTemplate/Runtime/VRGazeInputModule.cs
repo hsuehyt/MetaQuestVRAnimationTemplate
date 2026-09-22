@@ -13,6 +13,8 @@ namespace VRAnimationTemplate
         private Button[] buttons;
         private Button gazeButton;
         private float gazeTime;
+        private static readonly Color IdleColor = new Color(0.14f, 0.17f, 0.25f, 1f);
+        private static readonly Color HoverColor = new Color(0.10f, 0.55f, 0.85f, 1f);
 
         private void Awake()
         {
@@ -20,6 +22,11 @@ namespace VRAnimationTemplate
                 gazeCamera = Camera.main;
 
             buttons = FindObjectsByType<Button>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+            foreach (Button button in buttons)
+            {
+                button.transition = Selectable.Transition.None;
+                SetGazeHighlight(button, false);
+            }
         }
 
         private void Update()
@@ -34,8 +41,10 @@ namespace VRAnimationTemplate
 
             if (currentButton != gazeButton)
             {
+                SetGazeHighlight(gazeButton, false);
                 gazeButton = currentButton;
                 gazeTime = 0f;
+                SetGazeHighlight(gazeButton, true);
             }
             else if (gazeButton != null && gazeButton.IsActive() && gazeButton.IsInteractable())
             {
@@ -59,6 +68,19 @@ namespace VRAnimationTemplate
                     ? Color.white
                     : new Color(0.1f, 0.85f, 1f, 1f);
             }
+        }
+
+        private void OnDisable()
+        {
+            SetGazeHighlight(gazeButton, false);
+            gazeButton = null;
+            gazeTime = 0f;
+        }
+
+        private void SetGazeHighlight(Button button, bool highlighted)
+        {
+            if (button != null && button.targetGraphic != null)
+                button.targetGraphic.color = highlighted ? HoverColor : IdleColor;
         }
 
         private Button FindGazedButton()

@@ -90,7 +90,7 @@ namespace VRAnimationTemplate.Editor
             if(File.Exists(ForestRobotMocapBuilder.SourcePath)) ForestRobotMocapBuilder.Configure(controller);
             foreach(var director in Object.FindObjectsByType<VRChapterDirector>(FindObjectsSortMode.None))
             {
-                var so=new SerializedObject(director); so.FindProperty("durationSeconds").floatValue=controller.ChapterDuration; so.FindProperty("autoAdvance").boolValue=true; so.ApplyModifiedPropertiesWithoutUndo();
+                var so=new SerializedObject(director); so.FindProperty("durationSeconds").floatValue=controller.MotionCycleDuration; so.FindProperty("autoAdvance").boolValue=false; so.ApplyModifiedPropertiesWithoutUndo();
             }
             GameObject ui=GameObject.Find("VR UI");
             var reticle=GameObject.Find("Gaze Reticle"); if(reticle) {var image=reticle.GetComponent<Image>();image.enabled=true;image.type=Image.Type.Simple;image.fillAmount=1;}

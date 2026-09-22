@@ -42,7 +42,7 @@ namespace VRAnimationTemplate.Editor
             if (!encounter) throw new InvalidOperationException("Scene 2 has no forest robot.");
             Configure(encounter);
             var director = Object.FindFirstObjectByType<VRChapterDirector>();
-            if (director) director.SetDuration(encounter.ChapterDuration);
+            if (director) director.SetDuration(encounter.MotionCycleDuration);
             ValidateAndRender(encounter, Camera.main);
             encounter.Sample(0);
             EditorSceneManager.MarkSceneDirty(scene);
