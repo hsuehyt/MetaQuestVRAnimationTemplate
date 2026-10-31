@@ -13,26 +13,45 @@ namespace VRAnimationTemplate
 
         private float elapsed;
         private bool finished;
+        private bool externalLoopTime;
 
-        private void Update()
+        public void SetDuration(float seconds) => durationSeconds = Mathf.Max(.1f, seconds);
+
+        public void SetLoopTime(float seconds, float loopDuration)
+        {
+            durationSeconds = Mathf.Max(.1f, loopDuration);
+            elapsed = Mathf.Repeat(Mathf.Max(0f, seconds), durationSeconds);
+            externalLoopTime = true;
+        }
+
+        private void LateUpdate()
         {
             if (finished)
                 return;
 
-            elapsed += Time.deltaTime;
-            float normalized = Mathf.Clamp01(elapsed / durationSeconds);
+            if (!externalLoopTime)
+            {
+                elapsed += Time.deltaTime;
+                if (elapsed >= durationSeconds)
+                {
+                    if (autoAdvance)
+                    {
+                        elapsed = durationSeconds;
+                        finished = true;
+                        VRSceneFlow.Instance?.NextScene();
+                    }
+                    else
+                    {
+                        elapsed = Mathf.Repeat(elapsed, durationSeconds);
+                    }
+                }
+            }
 
+            float normalized = Mathf.Clamp01(elapsed / durationSeconds);
             if (progressFill != null)
                 progressFill.fillAmount = normalized;
             if (timeLabel != null)
                 timeLabel.text = $"{Mathf.CeilToInt(Mathf.Max(0f, durationSeconds - elapsed))}s";
-
-            if (elapsed >= durationSeconds)
-            {
-                finished = true;
-                if (autoAdvance && VRSceneFlow.Instance != null)
-                    VRSceneFlow.Instance.NextScene();
-            }
         }
 
         public void ContinueNow()

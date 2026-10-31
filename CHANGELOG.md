@@ -1,5 +1,14 @@
 # Changelog
 
+## Student starter (based on 1.0.2)
+
+- Preserve the original animation content and five-scene flow.
+- Backport immediate gray-to-blue gaze button feedback and repeating chapter countdowns.
+- Disable automatic chapter advancement in Scene1–3 and the scene generator; use Menu or Skip / Next.
+- Keep the original assets and scene object references.
+- Validation: all three chapters passed desktop loop, animation, and gaze checks; all five scenes passed reference and navigation-binding checks. User confirmed Quest testing.
+
+
 ## 1.0.2
 
 - Fix Scene1, Scene2, and Scene3 menus in world space so head movement can aim at buttons.

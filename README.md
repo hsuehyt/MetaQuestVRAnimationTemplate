@@ -1,4 +1,6 @@
-# Meta Quest VR Animation Template
+# MetaQuest-VR-Animation-Template
+
+This student starter is based on **v1.0.2**, with the latest gray/blue gaze feedback and repeating chapter timer backported. The original three scenes and their animation content are preserved; Scene4 and later demo content are not included.
 
 Version **1.0.2** fixes the chapter menus in world space for head-gaze selection and lowers their menu panels. The configured Universal Render Pipeline (URP) setup from 1.0.1 is included.
 
@@ -9,7 +11,7 @@ A small, editable Unity project template for a linear VR presentation:
 The generated experience includes:
 
 - A head-gaze start menu that works without controller setup
-- Three timed animation chapters
+- Three continuously animated chapters with repeating 12-second countdowns
 - Skip, menu, replay, and quit controls
 - A reusable scene-flow controller
 - Example procedural animation that can be replaced with Timeline, Animator, or video
@@ -18,7 +20,7 @@ The generated experience includes:
 
 ## Requirements
 
-- Unity `6000.3.10f1` or a compatible Unity 6 release
+- Unity `6000.3.23f1` (the recorded project version)
 - Android Build Support, Android SDK & NDK Tools, and OpenJDK installed through Unity Hub
 - A Meta Quest headset in Developer Mode, or Meta XR Simulator
 
@@ -27,9 +29,9 @@ The generated experience includes:
 1. Add this folder to Unity Hub and open it.
 2. Let Unity restore the Unity packages.
 3. Add **Meta XR All-in-One SDK** from Package Manager > My Assets. This manual step avoids registry/certificate differences between machines.
-4. In Unity, choose **Tools > VR Animation Template > Generate All Scenes**.
+4. Use the included scenes. **Generate All Scenes** rebuilds the template and overwrites scene edits; it is not required to get started.
 5. Open `Assets/VRAnimationTemplate/Scenes/StartMenu.unity`.
-6. Press Play. Look at a button for about one second to activate it.
+6. Press Play. Buttons are gray when idle and immediately turn blue when gazed at. Hold your gaze for about one second to activate one.
 7. Open **Meta > Tools > Project Setup Tool**, select the Meta/Android target, then choose **Fix All** and **Apply All**.
 8. In **File > Build Profiles**, enable/switch to **Meta Quest**. On Unity versions without that profile, use Android.
 9. Connect the headset and select **Build And Run**.
@@ -51,7 +53,7 @@ Each generated chapter contains a `Chapter Director` and an `Animation Placehold
 - Delete or disable `Animation Placeholder`.
 - Add a Timeline/Playable Director, Animator, video player, or your own scene objects.
 - Set `Chapter Director > Duration Seconds` to the desired chapter length.
-- Disable `Auto Advance` if the chapter should wait for the viewer to press **Continue**.
+- `Auto Advance` is disabled by default: the countdown repeats and the animation continues until **MENU** or **SKIP / NEXT** is selected. Enable it for a timed transition.
 
 Scene names are centralized in `VRSceneFlow.cs`. If you rename scenes, update its default scene list or the serialized list in the Inspector.
 
@@ -66,3 +68,11 @@ Scene names are centralized in `VRSceneFlow.cs`. If you rename scenes, update it
 - This template uses a lightweight OpenXR head-pose driver and gaze UI so it can run before controller prefabs are configured.
 - For production controller or hand input, install Meta XR Interaction SDK and add the appropriate Meta Building Blocks.
 - Keep shaders mobile-friendly, use baked lighting where possible, and test performance on the headset early.
+
+## Student starter validation
+
+A Unity 6000.3.23f1 batch Play Mode check passed for Scene1, Scene2, and Scene3: the original animation keeps moving, the 12-second countdown repeats without changing scenes, and gaze highlights and dwell activation work. All five scenes passed missing-script/reference and navigation-binding checks. The original scene files differ only in Auto Advance being disabled.
+
+The user subsequently tested this student starter on Quest successfully. Headset frame rate was not measured. The desktop batch run logged startup licensing messages and an unavailable OpenXR headset, but the chapter checks completed successfully. Run Unity in batch mode with `-executeMethod StudentStarterCheck.Run` (without `-quit`) to repeat the checks; this opens the included scenes, enters Play Mode, and exits the Editor when finished. Results are written to `Artifacts/StudentStarterValidation.txt`. Use a separate Editor instance without unsaved work.
+
+This branch is **student-starter-v1.0.2** in the existing repository. The Unity product name remains **MetaQuest-VR-Animation-Template**. After extracting a GitHub ZIP, you can rename the extracted folder to that name before adding it to Unity Hub.

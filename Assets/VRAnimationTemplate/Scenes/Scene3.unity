@@ -1095,7 +1095,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: VRAnimationTemplate.Runtime::VRAnimationTemplate.VRChapterDirector
   durationSeconds: 12
-  autoAdvance: 1
+  autoAdvance: 0
   timeLabel: {fileID: 1251589554}
   progressFill: {fileID: 962941157}
 --- !u!4 &1096078968
