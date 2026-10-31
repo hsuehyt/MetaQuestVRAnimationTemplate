@@ -6,7 +6,7 @@ The experience follows a six-scene sequence:
 
 `Start Menu -> Scene 1 -> Scene 2 -> Scene 3 -> Scene 4 -> End Credits`
 
-Current version: **v1.0.7**. See the [changelog](CHANGELOG.md) for version history.
+Current version: **v1.0.8**. See the [changelog](CHANGELOG.md) for version history.
 
 ## Features
 
@@ -98,3 +98,7 @@ Scene names are centralized in `VRSceneFlow.cs`. If you rename scenes, update th
 - This template uses a lightweight OpenXR head-pose driver and gaze UI so it can run before controller prefabs are configured.
 - For production controller or hand input, install Meta XR Interaction SDK and add the appropriate Meta Building Blocks.
 - Keep shaders mobile-friendly, use baked lighting where possible, and test performance on the headset early.
+
+## Student starter and showcase
+
+Start with the [student starter release](https://github.com/hsuehyt/MetaQuestVRAnimationTemplate/releases/tag/student-v1.0.2.1) for the three original animation placeholders and updated gaze UI. This **v1.0.8 showcase** demonstrates how the same chapter framework can grow into rain effects, a giant forest robot, an animated furry dancer, and a storm ocean with a pirate ship.

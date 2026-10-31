@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.0.8
 
 - Add Scene4 to the chapter flow with the existing gaze UI and looping countdown.
 - Add a procedural storm ocean, foggy sky, rain, lightning, thunder, and crest spray.
