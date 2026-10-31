@@ -60,33 +60,19 @@ The scene generator selects the active pipeline's default shader (or Standard fo
 
 ## Scene1 rain
 
-Scene1 includes a **Rain VFX** object that runs during Play mode. Its **Rain Effect** component controls the emission area, height, drops per second, velocity, surface layers, and ripple size/lifetime. The generator also includes this effect when rebuilding Scene1.
-
-Drops create expanding, fading rings where they hit non-trigger 3D colliders, including the floor and animated placeholder. Add a Collider to imported surfaces that should receive rain impacts; a Rigidbody is not required. Rings follow moving surfaces. The effect uses a URP shader, a bounded pool, and one combined mesh without per-drop GameObjects. Profile on the target headset and reduce Drops Per Second if needed.
+A looping rain scene with surface-impact ripples and an animated placeholder. See the [Scene1 notes](docs/Scene1.md) for rain controls, collider setup, and performance guidance.
 
 ## Scene2 forest robot encounter
 
-Scene2 places the viewer at human scale in a dense North American mountain conifer forest at night. An approximately **29-metre robot** rises above the surrounding canopy. The environment includes moonlight, fog, drifting ground mist, rocks, ferns, fallen timber, and synthesized wind and footfall audio.
-
-The robot faces the viewer and plays the supplied `Look Around.fbx` mocap at 30% speed, with visible searchlight-eye beams. It stays in place and loops the look-around motion, blinking twice near the end of each cycle. Its metal parts follow an articulated joint hierarchy driven by a retargeted animation clip through `ForestRobotEncounter`; this sequence does not use a Timeline asset. Adjust **Motion Speed** on the **Forest Encounter** component to change playback speed.
-
-**Chapter Director** repeats the approximately **21.11-second** robot motion cycle at the default speed. Its countdown resets when the mocap loop restarts, and changes with Motion Speed. Auto Advance is disabled; use **Menu** or **Skip / Next** to leave Scene2. The forward-facing VR UI and visible gaze reticle remain available throughout.
-
-To regenerate the encounter, choose **Tools > VR Animation Template > Build Forest Encounter in Scene 2**. This replaces the forest root and regenerates its assets; preserve manual edits first. See the [Scene2 setup notes](Assets/VRAnimationTemplate/ForestEncounter/README.md) for detailed timing and implementation notes. The scene is a stylized procedural interpretation of the concept, with simulated volumetric beams; Quest performance and headset comfort still require device testing.
+A looping nighttime forest encounter with a giant robot performing a look-around animation. See the [Scene2 notes](Assets/VRAnimationTemplate/ForestEncounter/README.md) for motion controls, timing, regeneration, and validation details.
 
 ## Scene3 furry dancer
 
-Scene3 contains a **2-metre** character in front of the viewer, playing an approximately **18.67-second** looping belly dance. Belly jiggle amount **2** is baked into the exported joints. Auto Advance is disabled, and the countdown restarts with every dance loop. Use **Skip / Next** or Menu to leave the scene.
+A looping belly-dance scene with a life-size character and adjustable animated fur. See the [Scene3 notes](docs/Scene3.md) for fur settings, motion controls, asset locations, and performance guidance.
 
-The current fur preset targets **Quest connected to a PC**. It uses 2,000 opaque tube strands plus an undercoat, blue roots and skin, and magenta tips. Strands are 15–35 cm long and 30–50 mm in diameter, with zero taper. Automatic segmentation uses a 7.5 cm target, 2–8 segments, and four tube sides. Palms and soles are excluded using a surface mask.
+## Scene4 ocean storm
 
-Select **Dancing Fat Man > Fur** in the Hierarchy. The **Dancer Fur** Inspector exposes colors (including bare skin), strand count, length up to 100 cm, diameter, taper, randomness, and segment settings. Outside Play mode, edit these settings and click **Apply Fur Settings**, then save. The groom asset is shared: changing it affects other instances using the same asset. Applying updates the selected coat's preview; it does not automatically overwrite the reusable prefab.
-
-Motion controls can be adjusted during playback. Defaults are inertia **0.9**, stiffness **0.5**, gravity **0.4**, with simulation and body collision enabled. **Reset Settings to Defaults** appears below **Collision volumes** and resets appearance and motion settings; click Apply Fur Settings to rebuild the coat afterward. The fitted collision volumes are preserved.
-
-Fur follows the skinned body with damped particle motion. Collision uses fitted body volumes and root surface planes, so some penetration is possible; strands can pass through each other. Profile the result on your PC and headset before increasing strand count, length, segments, or tube sides. Standalone Quest performance has not been validated.
-
-The character FBX, controller, materials, groom, preview mesh, and prefabs are under `Assets/VRAnimationTemplate/DancingFatMan`. Open the saved Scene3 directly to retain its current setup. The Tools menu's scene and character builders replace generated content, so preserve custom edits before using them.
+A wooden pirate ship with pale sails rides a stormy sea beneath a foggy sky, surrounded by rain, lightning, and irregular wave-impact spray. See the [Scene4 notes](Assets/VRAnimationTemplate/OceanStorm/README.md) for weather controls, ship setup, and validation details, including the successful Quest 3 PC Link test.
 
 ## Adding your animation and setting scene duration
 
@@ -112,8 +98,3 @@ Scene names are centralized in `VRSceneFlow.cs`. If you rename scenes, update th
 - This template uses a lightweight OpenXR head-pose driver and gaze UI so it can run before controller prefabs are configured.
 - For production controller or hand input, install Meta XR Interaction SDK and add the appropriate Meta Building Blocks.
 - Keep shaders mobile-friendly, use baked lighting where possible, and test performance on the headset early.
-
-
-## Ocean storm chapter
-
-Open the included Scene4 directly to preserve the finished storm and ship. See [OceanStorm notes](Assets/VRAnimationTemplate/OceanStorm/README.md) for controls, builders, and validation details. The user tested this scene successfully on Quest 3 via cable Link to a Windows 11 PC with an RTX 2070. Frame rate has not been measured; standalone Android performance has not been validated.
