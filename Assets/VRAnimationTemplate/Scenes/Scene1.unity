@@ -1048,6 +1048,7 @@ MonoBehaviour:
   - Scene1
   - Scene2
   - Scene3
+  - Scene4
   - EndCredits
   loadDelaySeconds: 0.15
 --- !u!4 &1046098185

@@ -18,6 +18,9 @@ EditorBuildSettings:
     path: Assets/VRAnimationTemplate/Scenes/Scene3.unity
     guid: 90626a2c42548f14da0d7cc13839ec99
   - enabled: 1
+    path: Assets/VRAnimationTemplate/Scenes/Scene4.unity
+    guid: 55dbc40e236c92b43ad283ce16ea648a
+  - enabled: 1
     path: Assets/VRAnimationTemplate/Scenes/EndCredits.unity
     guid: c34f28d5808b8004588955b60e3cfef9
   m_configObjects:

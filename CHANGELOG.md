@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- Add Scene4 to the chapter flow with the existing gaze UI and looping countdown.
+- Add a procedural storm ocean, foggy sky, rain, lightning, thunder, and crest spray.
+- Add a large pale-sailed wooden pirate ship with wind animation, wave-driven motion, a closed bow, and irregular localized water sheets, foam, and droplets.
+- Include generated assets and Editor tools; no paid art assets are required.
+- Validation: user confirmed successful Quest 3 PC Link testing. Scene references and shader compilation checks passed; effect and framing assertions passed. The strict batch test still reports an existing Unity Editor Search indexing exception. Headset frame rate was not measured.
+
 ## 1.0.7
 
 - Make every gaze-controlled button use the existing gray background when idle and blue background while gazed at, with an immediate color swap.

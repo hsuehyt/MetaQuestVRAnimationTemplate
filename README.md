@@ -2,16 +2,16 @@
 
 A Unity template for creating sequential VR animation experiences on Meta Quest. It provides gaze-based navigation, timed scene transitions, and editable example scenes so you can build a presentation around your own animations.
 
-The experience follows a five-scene sequence:
+The experience follows a six-scene sequence:
 
-`Start Menu -> Scene 1 -> Scene 2 -> Scene 3 -> End Credits`
+`Start Menu -> Scene 1 -> Scene 2 -> Scene 3 -> Scene 4 -> End Credits`
 
 Current version: **v1.0.7**. See the [changelog](CHANGELOG.md) for version history.
 
 ## Features
 
 - A head-gaze start menu that works without controller setup
-- Three animation chapters with optional timed transitions
+- Four animation chapters with optional timed transitions
 - Skip, menu, replay, and quit controls
 - A reusable scene-flow controller
 - Example procedural animation that can be replaced with Timeline, Animator, or video
@@ -27,6 +27,7 @@ Current version: **v1.0.7**. See the [changelog](CHANGELOG.md) for version histo
 | Scene1 | Rain, surface-impact ripples, and an animated placeholder with a repeating 12-second countdown. |
 | Scene2 | A looping nighttime forest encounter with a giant articulated robot. |
 | Scene3 | A life-size dancing character with baked belly jiggle and adjustable procedural fur; loops until Skip / Next. |
+| Scene4 | Storm ocean with a pale-sailed wooden pirate ship, wave-driven motion, and irregular hull-impact foam and spray; includes Menu / Next controls. |
 | EndCredits | Scrolling credits with Replay and Menu controls. |
 
 ## Requirements
@@ -112,3 +113,7 @@ Scene names are centralized in `VRSceneFlow.cs`. If you rename scenes, update th
 - For production controller or hand input, install Meta XR Interaction SDK and add the appropriate Meta Building Blocks.
 - Keep shaders mobile-friendly, use baked lighting where possible, and test performance on the headset early.
 
+
+## Ocean storm chapter
+
+Open the included Scene4 directly to preserve the finished storm and ship. See [OceanStorm notes](Assets/VRAnimationTemplate/OceanStorm/README.md) for controls, builders, and validation details. The user tested this scene successfully on Quest 3 via cable Link to a Windows 11 PC with an RTX 2070. Frame rate has not been measured; standalone Android performance has not been validated.

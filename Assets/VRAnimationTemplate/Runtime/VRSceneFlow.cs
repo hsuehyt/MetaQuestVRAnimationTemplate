@@ -11,7 +11,7 @@ namespace VRAnimationTemplate
 
         [SerializeField] private string[] sceneNames =
         {
-            "StartMenu", "Scene1", "Scene2", "Scene3", "EndCredits"
+            "StartMenu", "Scene1", "Scene2", "Scene3", "Scene4", "EndCredits"
         };
 
         [SerializeField, Min(0f)] private float loadDelaySeconds = 0.15f;

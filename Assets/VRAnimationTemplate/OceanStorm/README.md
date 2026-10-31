@@ -1,0 +1,41 @@
+# Ocean Storm — free PC VR prototype
+
+The storm sky uses broad, low-contrast directional noise with soft horizon haze instead of a detailed projected cloud sheet. The Sky material exposes **Soft Cloud Contrast** and **Horizon Haze**; lightning remains a diffuse flash through the overcast. The ocean's distant fog color matches the sky horizon. This is an inexpensive sky background, not simulated volumetric clouds.
+
+StormAtmosphere.hlsl shares rain-bank variation, fog color and lightning response between sky and water. Visibility starts fading beyond 12m and the distant sea is almost fully obscured around 150m, varying with slowly moving directional rain banks. Small ripples, foam and highlights also fade with distance. This produces atmospheric depth without screen-space depth-of-field blur, and does not fog the chapter UI. It applies to the sea, sky, and the procedural pirate ship.
+
+Open `OceanStorm.unity`, or choose **Tools > VR Animation Template > Open Ocean Storm**, and press Play. This independent scene does not change the animation chapter sequence.
+
+The integrated version is `Assets/VRAnimationTemplate/Scenes/Scene4.unity`. The chapter sequence is now StartMenu → Scene1 → Scene2 → Scene3 → Scene4 → EndCredits. Scene4 reuses Scene1's gaze UI, looping 12-second timer/progress bar, MENU, and SKIP / NEXT controls. It stays in the storm until NEXT is selected. Its UI is raised to match the ocean viewpoint.
+
+**Tools > VR Animation Template > Add Ocean Storm as Scene 4** installs the chapter and updates existing scene lists without regenerating the other environments. **Validate Scene 4 Navigation** runs a desktop Play Mode check of the actual Next/Menu button callbacks and restores Scene4 afterward. This does not replace a headset gaze/stereo test.
+
+For Quest 3: connect Quest Link to the Windows PC first, enter the Link environment, and use the project's Windows/Standalone OpenXR configuration. The existing project has its Standalone OpenXR loader assigned. A headset is not needed to see the forward view in the Game window.
+
+Select **Ocean Storm - Weather Controls** to adjust Rain Rate, Weather Volume, Lightning Enabled, Flash Strength, and Lightning Interval. The keyboard **L** key toggles lightning during Play. Start with the defaults and tune while wearing the headset; no headset performance measurement has been made automatically.
+
+The viewer stays fixed above the water. Only real head movement changes the camera; there is no scripted bobbing or locomotion. Waves are visual shader displacement, with no swimming or water collision simulation. The rain volume covers the starting area and is not intended for long-distance travel.
+
+All ocean/sky visuals and wind/thunder audio are procedural. No paid assets, external recordings, or third-party downloads are required. Unity's bundled Particle System module is enabled in the package manifest. This is a first prototype: cloud layers are an inexpensive sky shader, reflections are approximations, and wave crests do not physically break.
+
+The upgraded water replaces crossed sine-wave surface ripples with seamless, mipmapped noise layers. Four directional swells use sharpened crests; curvature drives fragmented whitecaps. Crest spray uses the same wave equations on the CPU and is limited to 400 particles, with emission attempts controlled by **Crest Spray Checks Per Second** on the weather controller. The Ocean material exposes **Whitecap Coverage** and **Small Wave Strength**. **Tools > VR Animation Template > Upgrade Ocean Surface** regenerates the detail texture and applies the defaults to both ocean scenes without rebuilding their UI. **Validate Ocean Weather** checks rain, crest spray, lightning and audio in Play Mode. Mip filtering and distance fading reduce distant detail, but headset frame rate and stereo shimmer still need on-device assessment.
+
+OceanStormBuilder.Build can regenerate the scene and its generated materials/mesh. Regeneration replaces edits to those generated files; ordinary use of the Open menu preserves them. The builder also writes an actual Unity preview and validation report under Artifacts/OceanStorm.
+
+Scene4 includes a procedural three-masted pirate ship at the left of the forward view. Select **Storm Pirate Ship** to adjust its position and heading. Its motion samples the ocean wave field for height, pitch and roll; sails, flag and rigging use lightweight shader wind. Bow impacts emit spray. The ship shares storm fog and lightning response. It has 16,380 triangles across eight mesh renderers. This is a visual prototype with a fixed horizontal anchor, not a boardable vessel or full cloth/fluid simulation. Headset performance is unmeasured.
+
+**Tools > VR Animation Template > Add Pirate Ship to Scene 4** creates the ship and generated assets, preserving an existing ship if present. The standalone OceanStorm scene is unchanged. A desktop Play Mode check in the isolated validation project observed wave-driven motion and bow spray with no ship runtime errors; this does not replace VR testing.
+
+The current ship follows the requested pale-sailed, natural-wood Wicked Wench / pre-Black Pearl direction, as a procedural interpretation rather than an exact film replica. Hull length is approximately 34.5m, beam 9.9m, main mast 31.5m above its local waterline. Three tiers of pale sails, stepped stern galleries, gold window frames and lantern housings replace the first prototype. Wave sampling accounts for the enlarged scale. **Upgrade Ship - Wicked Wench Style** replaces the generated ship and updates its shared generated mesh/material assets; it first saves a scene snapshot under Artifacts/OceanStorm. This snapshot is not an independent backup of the old shared meshes. The separate OceanStorm scene remains unchanged.
+
+Bow/contact repair: the existing ship now has a 10-triangle cap closing the forward hull ring. PirateShipContactFix.Apply patches the existing ship without rebuilding the scene. PirateShipMotion samples 24 points along the curved hull waterline, emits outward spray on rising contact and maintains a separate world-space foam system on the wave surface. Foam and spray are each capped at 512 particles. These are visual wave-contact effects, not fluid collision simulation. Existing weather, chapter UI and framing are preserved.
+
+Visual verification: ContactBow.png, ContactSide.png and ContactMain.png were rendered in the isolated Play Mode copy. The bow opening is closed and surface foam/outward splash are visible near the hull. The 12-second test observed 379 contact bursts plus rain, crest spray, lightning, thunder and ship motion. All effect/framing checks passed, but the strict test still reports FAIL because of the existing UnityEditor.Search.SearchDatabase indexing exception in the batch editor. Live Console and reference audit were clean; VR headset performance remains unmeasured.
+
+## Irregular wave impacts (2026-10-31)
+The old continuous hullFoam particle object is now inactive. ShipWaveImpact uses the existing ocean height field and relative water rise to select localized impacts, with irregular positions and cooldowns. Six pooled mesh pairs provide broken surface foam and short-lived lifting water sheets; fine billboard droplets replace the elongated streaks. PirateShipMotion retains the original buoyancy/rocking and lightning response. No scene regeneration or camera change was performed.
+
+Final verification: Scene4 saved, reference audit zero, foam shader compiler messages zero. A 12-second isolated Play Mode test observed 14 impact events, foam, droplets, rain, crest spray, lightning, thunder and 0.60m vertical ship motion; framing assertions passed. Strict zero-exception status remains FAIL due to the pre-existing UnityEditor.Search.SearchDatabase ArgumentOutOfRangeException in the batch editor. No C# compile errors or new effect exceptions were found. The live editor has an existing Input Manager deprecation warning. Quest headset performance remains untested. WaveImpactPeak.png and WaveImpactSide.png are actual rendered previews, not concept art.
+
+## Headset verification
+The user subsequently tested the completed scene on Quest 3 through cable Link to Windows 11 (RTX 2070) and reported that it looks great. This confirms user visual acceptance; frame rate has not been measured.

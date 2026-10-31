@@ -16,7 +16,7 @@ namespace VRAnimationTemplate.Editor
         private const string MaterialFolder = "Assets/VRAnimationTemplate/GeneratedMaterials";
         private static readonly string[] SceneNames =
         {
-            "StartMenu", "Scene1", "Scene2", "Scene3", "EndCredits"
+            "StartMenu", "Scene1", "Scene2", "Scene3", "Scene4", "EndCredits"
         };
 
         private static readonly Color[] SceneColors =
@@ -25,6 +25,7 @@ namespace VRAnimationTemplate.Editor
             new Color(0.02f, 0.10f, 0.16f),
             new Color(0.12f, 0.035f, 0.16f),
             new Color(0.15f, 0.07f, 0.025f),
+            new Color(0.17f, 0.21f, 0.25f),
             new Color(0.012f, 0.012f, 0.025f)
         };
 
@@ -37,6 +38,11 @@ namespace VRAnimationTemplate.Editor
 
             for (int i = 0; i < SceneNames.Length; i++)
             {
+                if (SceneNames[i] == "Scene4")
+                {
+                    OceanStormChapterBuilder.CreateSceneFour();
+                    continue;
+                }
                 Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
                 Camera camera = CreateCamera(SceneColors[i]);
                 CreateEnvironment(i, SceneColors[i]);
@@ -65,7 +71,7 @@ namespace VRAnimationTemplate.Editor
             EditorSceneManager.OpenScene($"{SceneFolder}/StartMenu.unity");
             EditorUtility.DisplayDialog(
                 "VR Animation Template",
-                "Five scenes were generated and added to Build Settings. Press Play and hold the center gaze on Start.",
+                "Six scenes were generated and added to Build Settings. Press Play and hold the center gaze on Start.",
                 "Ready");
         }
 
@@ -200,7 +206,7 @@ namespace VRAnimationTemplate.Editor
             Image panel = CreatePanel(canvas.transform, new Color(0.02f, 0.035f, 0.09f, 0.92f), new Vector2(720f, 590f));
             CreateText(panel.transform, "META QUEST", 28, FontStyle.Bold, new Vector2(0f, 220f), new Vector2(620f, 50f), new Color(0.35f, 0.85f, 1f));
             CreateText(panel.transform, "VR ANIMATION", 64, FontStyle.Bold, new Vector2(0f, 145f), new Vector2(650f, 85f), Color.white);
-            CreateText(panel.transform, "A five-scene presentation template", 24, FontStyle.Normal, new Vector2(0f, 78f), new Vector2(620f, 45f), new Color(0.72f, 0.78f, 0.9f));
+            CreateText(panel.transform, "A six-scene presentation template", 24, FontStyle.Normal, new Vector2(0f, 78f), new Vector2(620f, 45f), new Color(0.72f, 0.78f, 0.9f));
 
             Button start = CreateButton(panel.transform, "START", new Vector2(0f, -20f), new Vector2(420f, 82f), new Color(0.10f, 0.55f, 0.85f));
             UnityEventTools.AddPersistentListener(start.onClick, flow.StartExperience);
